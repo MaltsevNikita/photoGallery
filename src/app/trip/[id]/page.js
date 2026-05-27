@@ -97,7 +97,7 @@ export default function TripDetailPage() {
                   {trip.photos.map((photo, index) => (
                     <div key={index} className="overflow-hidden rounded-lg shadow">
                       <img 
-                        src={photo.startsWith('blob:') ? photo : photo} 
+                        src={photo} 
                         alt={`Фото поездки ${index + 1}`} 
                         className="w-full h-48 object-cover"
                       />

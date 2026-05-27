@@ -17,7 +17,7 @@ export default function TripModal({ onClose, onSave }) {
       ...tripData,
       [name]: value
     });
- };
+  };
 
   const handlePhotoChange = async (e) => {
     const files = Array.from(e.target.files);
@@ -74,19 +74,14 @@ export default function TripModal({ onClose, onSave }) {
     // Подготавливаем данные для сохранения
     const tripDataWithPhotoPaths = {
       ...tripData,
-      photos: uploadedPhotoPaths,
-      photoFiles: photoFiles.map(file => ({
-        name: file.name,
-        type: file.type,
-        size: file.size
-      }))
+      photos: uploadedPhotoPaths
     };
     
     onSave(tripDataWithPhotoPaths);
     onClose();
   };
 
- return (
+  return (
     <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
       <div className="bg-white rounded-lg p-6 w-full max-w-md max-h-[90vh] overflow-y-auto">
         <h2 className="text-xl font-bold mb-4">Добавить новую поездку</h2>

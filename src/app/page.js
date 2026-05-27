@@ -78,11 +78,14 @@ export default function Home() {
 
   return (
     <div className="min-h-screen bg-gray-50">
-      <header className="bg-white shadow">
-        <div className="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8">
-          <h1 className="text-3xl font-bold text-gray-90">Интерактивная карта путешествий</h1>
-        </div>
-      </header>
+       <header className="bg-white shadow">
+         <div className="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8">
+           <div className="flex items-center space-x-4">
+             <img src="/dima.jpg" alt="Дума" className="w-[100px] h-[100px] rounded" />
+             <h1 className="text-3xl font-bold text-gray-90">Галерея Мальцева Димы</h1>
+           </div>
+         </div>
+       </header>
       <main className="max-w-7xl mx-auto py-6 sm:px-6 lg:px-8">
         <div className="px-4 py-6 sm:px-0">
           <div className="flex justify-between items-center mb-6">
@@ -135,14 +138,14 @@ export default function Home() {
           className="fixed inset-0 bg-black bg-opacity-75 flex items-center justify-center z-50"
           onClick={closePhotoModal}
         >
-          <div className="relative max-w-[80vw] max-h-[80vh] p-4" onClick={(e) => e.stopPropagation()}>
+          <div className="relative w-full h-full max-w-[95vw] max-h-[95vh] p-4 flex items-center justify-center" onClick={(e) => e.stopPropagation()}>
             <img 
               src={selectedPhoto} 
               alt="Увеличенное фото поездки" 
               className="max-w-full max-h-full object-contain"
             />
             <button
-              className="absolute top-0 right-0 text-white bg-red-600 rounded-full w-8 h-8 flex items-center justify-center"
+              className="absolute top-4 right-4 text-white bg-red-600 rounded-full w-8 h-8 flex items-center justify-center"
               onClick={closePhotoModal}
             >
               &times;

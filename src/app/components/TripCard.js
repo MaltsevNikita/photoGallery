@@ -27,7 +27,7 @@ export default function TripCard({ trip, openPhotoModal }) {
             {trip.photos.slice(0, 3).map((photo, index) => (
               <div key={index} className="w-16 h-16 relative z-10">
                 <img 
-                  src={photo.startsWith('blob:') ? photo : photo} 
+                  src={photo} 
                   alt={`Фото поездки ${index + 1}`} 
                   className="w-full h-full object-cover rounded cursor-pointer"
                   onClick={(e) => {

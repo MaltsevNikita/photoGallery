@@ -32,22 +32,60 @@ export default function AdminPanel() {
     checkAuth();
  }, [router]);
 
-  const handleDeleteTrip = (tripId) => {
+  const handleDeleteTrip = async (tripId) => {
     if (window.confirm('Вы уверены, что хотите удалить эту поездку?')) {
+      const tripToDelete = trips.find(trip => trip.id === tripId);
+      
+      // Удаляем все фото поездки из хранилища
+      if (tripToDelete && tripToDelete.photos) {
+        for (const photo of tripToDelete.photos) {
+          if (photo.startsWith('/trips-images/')) {
+            try {
+              await fetch('/api/delete-image', {
+                method: 'DELETE',
+                headers: {
+                  'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ imageUrl: photo })
+              });
+            } catch (error) {
+              console.error('Ошибка при удалении файла из хранилища:', error);
+            }
+          }
+        }
+      }
+      
       const updatedTrips = trips.filter(trip => trip.id !== tripId);
       setTrips(updatedTrips);
       localStorage.setItem('trips', JSON.stringify(updatedTrips));
     }
   };
 
-  const handleDeletePhoto = (tripId, photoIndex) => {
+  const handleDeletePhoto = async (tripId, photoIndex) => {
     const updatedTrips = trips.map(trip => {
       if (trip.id === tripId) {
+        const photoToDelete = trip.photos[photoIndex];
         const updatedPhotos = trip.photos.filter((_, index) => index !== photoIndex);
         return { ...trip, photos: updatedPhotos };
       }
       return trip;
     });
+    
+    // Удаляем фото из хранилища
+    const photoToDelete = trips.find(trip => trip.id === tripId)?.photos[photoIndex];
+    if (photoToDelete && photoToDelete.startsWith('/trips-images/')) {
+      try {
+        await fetch('/api/delete-image', {
+          method: 'DELETE',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({ imageUrl: photoToDelete })
+        });
+      } catch (error) {
+        console.error('Ошибка при удалении файла из хранилища:', error);
+      }
+    }
     
     setTrips(updatedTrips);
     localStorage.setItem('trips', JSON.stringify(updatedTrips));
@@ -274,14 +312,14 @@ export default function AdminPanel() {
           className="fixed inset-0 bg-black bg-opacity-75 flex items-center justify-center z-50"
           onClick={closePhotoModal}
         >
-          <div className="relative max-w-[80vw] max-h-[80vh] p-4" onClick={(e) => e.stopPropagation()}>
+          <div className="relative w-full h-full max-w-[95vw] max-h-[95vh] p-4 flex items-center justify-center" onClick={(e) => e.stopPropagation()}>
             <img 
               src={selectedPhoto} 
               alt="Увеличенное фото поездки" 
               className="max-w-full max-h-full object-contain"
             />
             <button
-              className="absolute top-0 right-0 text-white bg-red-600 rounded-full w-8 h-8 flex items-center justify-center"
+              className="absolute top-4 right-4 text-white bg-red-600 rounded-full w-8 h-8 flex items-center justify-center"
               onClick={closePhotoModal}
             >
               &times;
